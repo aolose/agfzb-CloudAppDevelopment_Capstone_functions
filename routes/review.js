@@ -15,7 +15,7 @@ router.all('/', async function (req, res, next) {
     cloudant.setServiceUrl(s.COUCH_URL);
     if (/post/i.test(__ow_method)) {
         const doc = review;
-        const id = doc.id || Date.now()
+        const id = Date.now()
         try {
             cloudant.postDocument({db: "reviews", document: doc})
             return {"body": id};
