@@ -8,7 +8,7 @@ const {IamAuthenticator} = require('ibm-cloud-sdk-core');
 /* GET home page. */
 router.get('/', async function (req, res, next) {
     const {s} = require("./enum");
-    const {state: st, dealerId: id} = req.params
+    const {state: st, dealerId: id} = req.query
     const authenticator = new IamAuthenticator({apikey: s.IAM_API_KEY})
     const cloudant = CloudantV1.newInstance({
         authenticator: authenticator
@@ -17,7 +17,7 @@ router.get('/', async function (req, res, next) {
     try {
         const {result} = (st || id) ? await cloudant.postFind({
                 db: "dealerships",
-                selector: {st, id},
+                selector: {st, id: id && +id},
                 limit: 100
             })
             : await cloudant.postAllDocs({db: "dealerships", includeDocs: true})
